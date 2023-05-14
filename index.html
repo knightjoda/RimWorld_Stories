@@ -1,0 +1,26 @@
+<input type="file" id="file-input" />
+<button id="read-button">Read File</button>
+<pre id="file-contents"></pre>
+
+<script>
+    	document.querySelector("#read-button").addEventListener('click', function() {
+		let file = document.querySelector("#file-input").files[0];
+		let reader = new FileReader();
+		reader.addEventListener('load', function(e) {
+	    		let text = e.target.result;
+	    		var parser = new DOMParser();
+                var doc = parser.parseFromString(text, "text/xml");
+                var history = doc.getElementsByTagName('archivables')[0];
+                for ( var i = 0; i< history.childElementCount; i++){
+                    var event = history.getElementsByTagName("text")[i].childNodes[0].nodeValue
+                    console.log(event);
+                }
+                document.querySelector("#file-contents").textContent = text;
+                
+				
+         
+		});
+		reader.readAsText(file);
+
+	});
+</script>
