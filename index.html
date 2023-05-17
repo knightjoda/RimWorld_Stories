@@ -1,4 +1,3 @@
-select save file
 <input type="file" id="file-input" />
 <button id="read-button">Read File</button>
 <pre id="file-contents"></pre>
@@ -14,7 +13,10 @@ select save file
                 var history = doc.getElementsByTagName('archivables')[0];
                 for ( var i = 0; i< history.childElementCount; i++){
                     var event = history.getElementsByTagName("text")[i].childNodes[0].nodeValue
-                    console.log(event);
+                    var event = event.replace( /(<([^>]+)>)/ig, '');
+                    var event_clean = event.replaceAll('(/Name)','').replaceAll('(*Name)','').replaceAll('(/Faction)','');
+                    var event_clean = clean_tags(event_clean)
+                    console.log(event_clean);
                 }
                 document.querySelector("#file-contents").textContent = text;
                 
@@ -24,4 +26,19 @@ select save file
 		reader.readAsText(file);
 
 	});
+    function clean_tags(str){ 
+        let tagfound = 0
+        while (tagfound < 1){
+        var tag_start = str.indexOf('(*');
+        var tag_end = str.indexOf(')')+1;
+        if (tag_start == -1){
+            return str;
+            tagfound ++;
+        }
+        else{
+        console.log(tag_start +' '+tag_end)    
+        
+        tag = str.slice(tag_start,tag_end);
+        str = str.replace(tag,'');
+                    }}}
 </script>
