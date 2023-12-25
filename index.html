@@ -31,8 +31,7 @@
                     var event_clean = clean_tags(event_clean,'(*',')')
                     var event_clean = clean_tags(event_clean,'(/',')')
                     var event_clean = clean_tags(event_clean,'<','>')
-                   // history_div.innerHTML += event_clean+"<br>"+"<br>";
-                    console.log(event_clean);
+                    history_div.innerHTML += event_clean+"<br>"+"<br>";
                 }     
 		});
 		reader.readAsText(file);
@@ -42,10 +41,8 @@
         let tag_start = 0;
         while (tag_start != -1){
         tag_start = str.indexOf(open_tag);
-        console.log(tag_start);
-        tag_end = str.indexOf(close_tag)+1;
+        tag_end = str.indexOf(close_tag,tag_start)+1;
         tag = str.slice(tag_start,tag_end);
-        console.log(tag);
         str = str.replace(tag,'');
                     }
           return str;          
