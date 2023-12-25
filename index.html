@@ -1,8 +1,22 @@
-<input type="file" id="file-input" />
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+</head>
+<body>
+    <input type="file" id="file-input" />
 <button id="read-button">Read File</button>
 <pre id="file-contents"></pre>
+<div id="history-display"></div>
+</body>
+</html>
 
 <script>
+    var history_div = document.getElementById("history-display");
     	document.querySelector("#read-button").addEventListener('click', function() {
 		let file = document.querySelector("#file-input").files[0];
 		let reader = new FileReader();
@@ -13,32 +27,27 @@
                 var history = doc.getElementsByTagName('archivables')[0];
                 for ( var i = 0; i< history.childElementCount; i++){
                     var event = history.getElementsByTagName("text")[i].childNodes[0].nodeValue
-                    var event = event.replace( /(<([^>]+)>)/ig, '');
-                    var event_clean = event.replaceAll('(/Name)','').replaceAll('(*Name)','').replaceAll('(/Faction)','');
-                    var event_clean = clean_tags(event_clean)
-                    console.log(event_clean);
-                }
-                document.querySelector("#file-contents").textContent = text;
-                
-				
-         
+                    var event_clean = event
+                    var event_clean = clean_tags(event_clean,'(*',')')
+                    var event_clean = clean_tags(event_clean,'(/',')')
+                    var event_clean = clean_tags(event_clean,'<','>')
+                   // history_div.innerHTML += event_clean+"<br>"+"<br>";
+                    //console.log(event_clean);
+                }     
 		});
 		reader.readAsText(file);
 
 	});
-    function clean_tags(str){ 
-        let tagfound = 0
-        while (tagfound < 1){
-        var tag_start = str.indexOf('(*');
-        var tag_end = str.indexOf(')')+1;
-        if (tag_start == -1){
-            return str;
-            tagfound ++;
-        }
-        else{
-        console.log(tag_start +' '+tag_end)    
-        
+    function clean_tags(str,open_tag,close_tag){ 
+        let tag_start = 0;
+        while (tag_start != -1){
+        tag_start = str.indexOf(open_tag);
+        console.log(tag_start);
+        tag_end = str.indexOf(close_tag)+1;
         tag = str.slice(tag_start,tag_end);
+        console.log(tag);
         str = str.replace(tag,'');
-                    }}}
+                    }
+          return str;          
+                    }
 </script>
